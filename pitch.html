@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZeroKhata — Keynote Pitch Presentation</title>
+  
+  <!-- Reveal.js CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.css">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Space Grotesk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root {
+      --r-background-color: #07090e;
+      --r-main-color: #f1f5f9;
+      --r-heading-color: #ffffff;
+      --r-heading-font: '"Space Grotesk"', sans-serif;
+      --r-main-font: '"Plus Jakarta Sans"', sans-serif;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: #07090e;
+      overflow: hidden;
+    }
+
+    /* Ambient animated background grid and glow */
+    .ambient-bg {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(249, 115, 22, 0.15) 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, rgba(225, 29, 72, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.08) 0%, transparent 60%);
+      animation: ambientShift 14s ease-in-out infinite alternate;
+    }
+
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 50px 50px;
+    }
+
+    @keyframes ambientShift {
+      0% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.08) translate(-20px, 15px); }
+      100% { transform: scale(1) translate(20px, -15px); }
+    }
+
+    .reveal {
+      z-index: 2;
+      font-size: 24px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #fb923c 0%, #f43f5e 50%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gradient-text-gold {
+      background: linear-gradient(135deg, #fde047 0%, #fb923c 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(249, 115, 22, 0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.2);
+    }
+
+    .glass-pill {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(8px);
+    }
+
+    /* Animated neon gradient border */
+    .neon-border-box {
+      position: relative;
+      border-radius: 24px;
+      padding: 1px;
+      background: linear-gradient(90deg, #f97316, #ec4899, #8b5cf6, #f97316);
+      background-size: 300% 300%;
+      animation: neonFlow 6s linear infinite;
+    }
+
+    @keyframes neonFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .neon-content {
+      background: #0f172a;
+      border-radius: 23px;
+    }
+
+    /* Floating animation */
+    .animate-float-slow {
+      animation: floatSlow 4s ease-in-out infinite;
+    }
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Pulse glow */
+    .pulse-glow {
+      animation: pulseGlow 2.5s infinite;
+    }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 15px rgba(249, 115, 22, 0.4); }
+      50% { box-shadow: 0 0 35px rgba(249, 115, 22, 0.8); }
+    }
+
+    /* Reveal custom controls */
+    .reveal .controls { color: #f97316 !important; }
+    .reveal .progress { color: #f97316 !important; height: 5px; }
+    .reveal .slide-number {
+      font-family: 'Space Grotesk', sans-serif !important;
+      font-weight: 700;
+      color: #94a3b8 !important;
+      background: rgba(15, 23, 42, 0.8) !important;
+      padding: 6px 12px !important;
+      border-radius: 8px !important;
+      border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient moving gradient orbs & grid -->
+  <div class="ambient-bg"></div>
+  <div class="grid-overlay"></div>
+
+  <!-- Persistent Top Brand Bar -->
+  <div class="fixed top-5 left-6 z-50 flex items-center gap-2.5 pointer-events-none">
+    <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-orange-500 to-rose-600 flex items-center justify-center text-white shadow-lg shadow-orange-500/30">
+      <i data-lucide="zap" class="w-4 h-4"></i>
+    </div>
+    <span class="font-extrabold text-base tracking-tight text-white font-display">ZeroKhata</span>
+    <span class="text-[10px] uppercase font-bold tracking-widest text-orange-400 bg-orange-500/10 border border-orange-500/30 px-2 py-0.5 rounded-full ml-1">Live Deck</span>
+  </div>
+
+  <div class="fixed top-5 right-6 z-50 flex items-center gap-2">
+    <button onclick="toggleFullScreen()" class="glass-pill text-slate-300 hover:text-white px-3 py-1 rounded-xl text-xs font-semibold transition flex items-center gap-1.5 shadow-sm">
+      <i data-lucide="maximize" class="w-3.5 h-3.5"></i> Fullscreen (F11)
+    </button>
+    <a href="index.html" target="_blank" class="bg-gradient-to-r from-orange-500 to-rose-600 text-white font-bold px-3.5 py-1 rounded-xl text-xs flex items-center gap-1.5 shadow-md shadow-orange-500/20 hover:brightness-110 transition">
+      <i data-lucide="external-link" class="w-3.5 h-3.5"></i> Open App
+    </a>
+  </div>
+
+  <!-- PRESENTATION SLIDES -->
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- ================= SLIDE 1: TITLE ================= -->
+      <section data-transition="convex">
+        <div class="max-w-4xl mx-auto text-center pt-8">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-pill border-orange-500/30 text-orange-400 text-xs font-bold tracking-wider uppercase mb-6 animate-float-slow">
+            <span class="w-2 h-2 rounded-full bg-orange-400 animate-ping"></span>
+            PROMPT 02: THE SMALL BUSINESS REVOLUTION
+          </div>
+          
+          <h1 class="text-7xl md:text-8xl font-black font-display tracking-tight leading-none mb-4">
+            <span class="gradient-text">ZeroKhata</span>
+          </h1>
+
+          <p class="text-2xl md:text-3xl font-bold text-slate-200 tracking-tight mb-4 font-display">
+            Zero Udhaar. Zero Chaos. Zero Learning Curve.
+          </p>
+
+          <p class="text-base text-slate-400 max-w-2xl mx-auto leading-relaxed mb-8">
+            The Conversational Operating System for 80 Million Micro-Entrepreneurs, Home Bakers & Cloud Creators.
+          </p>
+
+          <div class="glass-card p-4 max-w-lg mx-auto flex items-center justify-between text-xs text-slate-300">
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>Built for WhatsApp Commerce</span>
+            </div>
+            <div class="h-4 w-px bg-white/10"></div>
+            <div>
+              <span class="text-orange-400 font-bold">5-Min Pitch</span>
+            </div>
+            <div class="h-4 w-px bg-white/10"></div>
+            <div class="text-slate-400">
+              Press <kbd class="bg-white/10 px-1.5 py-0.5 rounded font-mono text-[10px]">Space</kbd> or <kbd class="bg-white/10 px-1.5 py-0.5 rounded font-mono text-[10px]">&rarr;</kbd>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 2: THE STORY ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-rose-400 mb-2 font-display">The Human Reality</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">Meet Sunita.</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            
+            <div class="space-y-4 text-base text-slate-300">
+              <div class="fragment fade-up glass-card p-4 border-l-4 border-l-orange-500">
+                <p class="font-medium text-slate-200">
+                  Wakes up at <strong>5:00 AM</strong> every day, handcrafting custom celebration cakes in her small apartment kitchen.
+                </p>
+              </div>
+
+              <div class="fragment fade-up glass-card p-4 border-l-4 border-l-amber-500">
+                <p class="font-medium text-slate-200">
+                  Takes <strong>40+ orders every month</strong> through WhatsApp voice notes, Instagram DMs, and frantic phone calls.
+                </p>
+              </div>
+
+              <div class="fragment fade-up glass-card p-4 border-l-4 border-l-rose-500">
+                <p class="font-medium text-slate-200">
+                  Works 200 hours. Bills <strong class="text-white">Rs 31,000</strong>. Collects only <strong class="text-emerald-400">Rs 24,000</strong>.
+                </p>
+              </div>
+            </div>
+
+            <!-- Red Big Stat Box -->
+            <div class="fragment zoom-in">
+              <div class="glass-card p-8 text-center border-rose-500/40 relative overflow-hidden bg-rose-950/20">
+                <div class="text-[11px] font-bold uppercase tracking-wider text-rose-300 mb-2">Uncollected Margin Every Month</div>
+                <div class="text-6xl md:text-7xl font-black text-rose-500 font-display mb-2 tracking-tight">
+                  Rs 7,000
+                </div>
+                <p class="text-xs text-rose-200 font-medium max-w-xs mx-auto mb-4">
+                  Not lost to theft. Lost to: <em>"I'll GPay the balance tonight bhaiya."</em> And never did.
+                </p>
+                <div class="h-px bg-rose-500/20 w-full mb-3"></div>
+                <p class="text-xs text-slate-400 italic">
+                  Sunita is not alone. She is 1 of <strong>80 Million micro-sellers</strong> in India.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 3: 3 PROBLEMS ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-orange-400 mb-2 font-display">Root Cause Analysis</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">Why Small Businesses Bleed Cash</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            
+            <div class="fragment fade-up glass-card p-6 border-t-4 border-t-rose-500">
+              <div class="w-12 h-12 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center font-black text-xl mb-4">
+                01
+              </div>
+              <h3 class="text-lg font-bold text-white font-display mb-2">No Professional Bill</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Sending raw, informal text chats makes customers take payment casually. There is no proof of balance due and no urgency to pay.
+              </p>
+            </div>
+
+            <div class="fragment fade-up glass-card p-6 border-t-4 border-t-orange-500" data-fragment-index="1">
+              <div class="w-12 h-12 rounded-2xl bg-orange-500/10 text-orange-400 flex items-center justify-center font-black text-xl mb-4">
+                02
+              </div>
+              <h3 class="text-lg font-bold text-white font-display mb-2">Awkward Dues Chasing</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Sellers hate sounding desperate. Chasing friends, family, and neighbours for Rs 400 balance feels socially humiliating.
+              </p>
+            </div>
+
+            <div class="fragment fade-up glass-card p-6 border-t-4 border-t-indigo-500" data-fragment-index="2">
+              <div class="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-black text-xl mb-4">
+                03
+              </div>
+              <h3 class="text-lg font-bold text-white font-display mb-2">Kitchen Prep Chaos</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Critical details — delivery time, eggless, anniversary name — get buried inside 200 unread WhatsApp chat notifications.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="fragment fade-in mt-6 glass-pill p-3.5 text-center text-xs text-orange-300 font-semibold border-orange-500/30">
+            🚨 The Consequence: Home micro-businesses lose <strong>15% to 20% of their net annual profit</strong> to forgotten credit.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 4: THE GAP ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-indigo-400 mb-2 font-display">The Existing Fallacy</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">Why Shopify & Zoho Fail Them</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <div class="fragment fade-right glass-card p-6 border-rose-500/30 bg-rose-950/10">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 flex items-center justify-center text-xs font-black">✕</span>
+                <h3 class="text-base font-bold text-white font-display">Legacy Software (Shopify, Zoho, Khatabook)</h3>
+              </div>
+              <ul class="text-xs space-y-3 text-slate-400">
+                <li class="flex items-start gap-2">
+                  <span class="text-rose-500">✕</span>
+                  <span><strong>Costs Rs 1,999 - Rs 3,500/month:</strong> Exorbitant for small home bakers.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-rose-500">✕</span>
+                  <span><strong>Requires 4 hours of setup:</strong> GST, merchant gateways, domain names.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-rose-500">✕</span>
+                  <span><strong>Desktop-first UX:</strong> Impossible while hands are covered in flour or dough.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-rose-500">✕</span>
+                  <span><strong>Forces customer off WhatsApp:</strong> Friction causes abandoned carts.</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="fragment fade-left glass-card p-6 border-emerald-500/40 bg-emerald-950/10">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xs font-black">✓</span>
+                <h3 class="text-base font-bold text-white font-display">ZeroKhata: Conversational OS</h3>
+              </div>
+              <ul class="text-xs space-y-3 text-slate-200">
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400">✓</span>
+                  <span><strong>100% Free Tier:</strong> Up to 30 orders/mo free; ₹299/mo Pro.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400">✓</span>
+                  <span><strong>Zero Technical Setup:</strong> Ready in 30 seconds with no credit card.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400">✓</span>
+                  <span><strong>Thumb-Friendly Mobile UI:</strong> Big buttons for fast one-handed kitchen action.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-emerald-400">✓</span>
+                  <span><strong>WhatsApp Native:</strong> Invoices land directly in chat via official wa.me protocols.</span>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+          <p class="fragment fade-in text-center text-sm text-slate-400 italic mt-6">
+            "Giving enterprise SaaS to a home baker is like giving an airplane to someone who just needs a bicycle."
+          </p>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 5: 4 SUPERPOWERS ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-orange-400 mb-2 font-display">The Architecture</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">ZeroKhata — 4 Core Superpowers</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+            
+            <div class="fragment fade-up glass-card p-5 flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-orange-500/20 text-orange-400 flex items-center justify-center shrink-0 text-2xl">
+                ✨
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white font-display">AI Voice & Chat Parser</h3>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                  Paste raw voice note transcripts or broken Hinglish WhatsApp messages. Auto-extracts customer, items, advance, delivery, and notes in 1 second.
+                </p>
+              </div>
+            </div>
+
+            <div class="fragment fade-up glass-card p-5 flex items-start gap-4" data-fragment-index="1">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0 text-2xl">
+                📲
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white font-display">1-Click WhatsApp Invoicing</h3>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                  Generates clean, emoji-formatted order invoices with order numbers, itemized breakdown, advance paid, and bold balance due with direct wa.me link.
+                </p>
+              </div>
+            </div>
+
+            <div class="fragment fade-up glass-card p-5 flex items-start gap-4" data-fragment-index="2">
+              <div class="w-12 h-12 rounded-2xl bg-blue-500/20 text-blue-400 flex items-center justify-center shrink-0 text-2xl">
+                📊
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white font-display">Kitchen Kanban & Delivery Tracker</h3>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                  Visual order pipeline: <em>New &rarr; Preparing &rarr; Ready &rarr; Delivered</em>. Confetti feedback and real-time today's delivery alerts.
+                </p>
+              </div>
+            </div>
+
+            <div class="fragment fade-up glass-card p-5 flex items-start gap-4" data-fragment-index="3">
+              <div class="w-12 h-12 rounded-2xl bg-purple-500/20 text-purple-400 flex items-center justify-center shrink-0 text-2xl">
+                📒
+              </div>
+              <div>
+                <h3 class="text-base font-bold text-white font-display">Digital Khata (Debt Book)</h3>
+                <p class="text-xs text-slate-400 mt-1 leading-relaxed">
+                  Tracks market credit and customer lifetime spend. One-click polite WhatsApp reminder message that recovers money without social awkwardness.
+                </p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 6: THE MAGIC DEMO ================= -->
+      <section data-transition="zoom">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-emerald-400 mb-2 font-display">The Showstopper Feature</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">The Live Magic Demo</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+            
+            <!-- Left: Messy Input -->
+            <div class="glass-card p-5 border-orange-500/40">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-orange-400 font-display">Raw Customer Message</span>
+                <span class="text-[10px] bg-orange-500/10 text-orange-300 px-2 py-0.5 rounded-full font-mono">Input</span>
+              </div>
+              <div class="bg-black/50 p-4 rounded-xl border border-white/5 font-mono text-xs text-slate-300 leading-relaxed whitespace-pre-wrap">
+"bhaiya 1kg chocolate cake kal 4 baje chahiye, Priya Sharma ke liye, 9876543210, 500 advance GPay kar diya, likh dena happy birthday rohit, eggless banana"
+              </div>
+              <p class="text-[11px] text-slate-500 mt-2 italic">Chaotic Hinglish, missing punctuation, slang.</p>
+            </div>
+
+            <!-- Right: Structured Output -->
+            <div class="fragment fade-left glass-card p-5 border-emerald-500/40 bg-emerald-950/20">
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-bold uppercase tracking-wider text-emerald-400 font-display">ZeroKhata AI Extraction (1.2s)</span>
+                <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded-full font-bold">Verified</span>
+              </div>
+              
+              <div class="space-y-1.5 text-xs text-slate-200">
+                <div class="flex justify-between py-1 border-b border-white/5">
+                  <span class="text-slate-400">Customer:</span>
+                  <span class="font-bold text-white">Priya Sharma (9876543210)</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-white/5">
+                  <span class="text-slate-400">Delivery:</span>
+                  <span class="font-bold text-white">Tomorrow • 4:00 PM</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-white/5">
+                  <span class="text-slate-400">Item:</span>
+                  <span class="font-bold text-white">1x Chocolate Truffle (Rs 950)</span>
+                </div>
+                <div class="flex justify-between py-1 border-b border-white/5 text-emerald-400">
+                  <span>Advance Received:</span>
+                  <span class="font-bold">Rs 500 (GPay)</span>
+                </div>
+                <div class="flex justify-between py-1 font-bold text-rose-400">
+                  <span>Balance Due:</span>
+                  <span>Rs 450</span>
+                </div>
+                <div class="text-[11px] text-amber-300 italic pt-1">
+                  Note: "Happy Birthday Rohit" • Eggless
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="fragment fade-up mt-6 glass-card p-3.5 flex items-center justify-between text-xs">
+            <span class="text-slate-300">💡 <strong>Showcase Stunt:</strong> You can literally ask a judge to text any order live during the presentation!</span>
+            <a href="index.html" target="_blank" class="text-orange-400 hover:text-orange-300 font-bold flex items-center gap-1">
+              Test Live Parser &rarr;
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 7: BUSINESS MODEL ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-orange-400 mb-2 font-display">Monetization</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">Clear, High-Margin Business Model</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch">
+            
+            <div class="fragment fade-up glass-card p-6 flex flex-col justify-between">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider text-slate-400">Entry Tier</span>
+                <h3 class="text-2xl font-black text-white font-display mt-1">Free Tier</h3>
+                <div class="text-3xl font-black text-slate-300 my-3">Rs 0 <span class="text-xs font-normal text-slate-500">/ forever</span></div>
+                <ul class="text-xs space-y-2 text-slate-400">
+                  <li>• Up to 30 customer orders per month</li>
+                  <li>• Complete visual kitchen kanban board</li>
+                  <li>• 1-Click WhatsApp invoice dispatch</li>
+                  <li>• Digital Khata debt ledger</li>
+                </ul>
+              </div>
+              <div class="mt-6 pt-4 border-t border-white/10 text-[11px] text-slate-500">
+                Gains massive adoption & builds trust.
+              </div>
+            </div>
+
+            <div class="fragment fade-up neon-border-box" data-fragment-index="1">
+              <div class="neon-content p-6 h-full flex flex-col justify-between">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-wider text-orange-400">Growth Tier</span>
+                    <span class="bg-orange-500 text-black text-[10px] font-black uppercase px-2 py-0.5 rounded-full">Pro SaaS</span>
+                  </div>
+                  <h3 class="text-2xl font-black text-white font-display mt-1">ZeroKhata Pro</h3>
+                  <div class="text-3xl font-black text-orange-400 my-3 font-display">
+                    Rs 299 <span class="text-xs font-normal text-slate-400">/ month ($3.60)</span>
+                  </div>
+                  <ul class="text-xs space-y-2 text-slate-200">
+                    <li>• <strong>Unlimited</strong> orders & AI Voice parsing</li>
+                    <li>• <strong>Multi-staff sync</strong> for kitchen helpers</li>
+                    <li>• <strong>Automated WhatsApp payment reminders</strong></li>
+                    <li>• <strong>Custom UPI QR codes</strong> on thermal bills</li>
+                    <li>• <strong>Exportable tax & P&L summaries</strong></li>
+                  </ul>
+                </div>
+
+                <div class="mt-6 pt-4 border-t border-white/10 flex justify-between items-center text-xs">
+                  <span class="text-slate-400">ROI for seller:</span>
+                  <span class="text-emerald-400 font-bold">Recovers ₹7,000 for just ₹299 (23x ROI)</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="fragment zoom-in mt-6 glass-pill p-3.5 text-center text-base font-extrabold text-white">
+            10,000 Paying Pro Sellers = <span class="gradient-text text-xl">Rs 3.6 Crore ARR ($430K)</span> with near-zero churn.
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 8: VIRAL FLYWHEEL ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-indigo-400 mb-2 font-display">Growth Engine</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">Our Unfair Advantage: Zero CAC</h2>
+
+          <div class="glass-card p-8 text-center relative overflow-hidden">
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+              
+              <div class="fragment fade-up bg-white/5 p-4 rounded-2xl border border-white/10">
+                <div class="text-3xl mb-2">👩‍🍳</div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-wider">1. Seller Sends Bill</h4>
+                <p class="text-[11px] text-slate-400 mt-1">ZeroKhata creates branded receipt</p>
+              </div>
+
+              <div class="fragment fade-up text-orange-400 text-2xl font-black hidden md:block" data-fragment-index="1">&rarr;</div>
+
+              <div class="fragment fade-up bg-white/5 p-4 rounded-2xl border border-white/10" data-fragment-index="2">
+                <div class="text-3xl mb-2">📱</div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-wider">2. Buyer Reads Invoice</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Sees footer: <em>"Billed via ZeroKhata"</em></p>
+              </div>
+
+              <div class="fragment fade-up text-orange-400 text-2xl font-black hidden md:block" data-fragment-index="3">&rarr;</div>
+
+              <div class="fragment fade-up bg-white/5 p-4 rounded-2xl border border-white/10" data-fragment-index="4">
+                <div class="text-3xl mb-2">🚀</div>
+                <h4 class="text-xs font-bold text-white uppercase tracking-wider">3. Buyer Becomes Seller</h4>
+                <p class="text-[11px] text-slate-400 mt-1">Taps link & signs up in 30 seconds</p>
+              </div>
+
+            </div>
+
+            <div class="fragment fade-in h-px bg-white/10 my-6"></div>
+
+            <p class="fragment fade-in text-xs text-slate-300 max-w-2xl mx-auto leading-relaxed">
+              Every invoice is an organic acquisition channel inside the exact conversation where trade happens. Same viral coefficient that drove <strong>Hotmail, Khatabook, and Meesho</strong> to tens of millions of users without massive ad budgets.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 9: GO TO MARKET ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-orange-400 mb-2 font-display">Distribution Engine</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">Reaching the First 10,000 Sellers</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+            
+            <div class="fragment fade-up glass-card p-5 border-t-4 border-t-orange-500">
+              <span class="text-[10px] font-mono text-orange-400 font-bold uppercase">Channel 01</span>
+              <h3 class="text-base font-bold text-white font-display mt-1 mb-2">Wholesaler Bundles</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Partner with baking supply distributors and flour mills. A physical postcard flyer with a QR code goes inside every 10kg flour & cocoa box: <em>"Stop losing money to forgotten orders."</em>
+              </p>
+            </div>
+
+            <div class="fragment fade-up glass-card p-5 border-t-4 border-t-rose-500" data-fragment-index="1">
+              <span class="text-[10px] font-mono text-rose-400 font-bold uppercase">Channel 02</span>
+              <h3 class="text-base font-bold text-white font-display mt-1 mb-2">WhatsApp Communities</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                Over 40,000 active Home Baker & Artisan WhatsApp/Telegram groups exist in India. Direct 30-sec video demonstrations showing how to recover ₹7,000 in uncollected dues.
+              </p>
+            </div>
+
+            <div class="fragment fade-up glass-card p-5 border-t-4 border-t-indigo-500" data-fragment-index="2">
+              <span class="text-[10px] font-mono text-indigo-400 font-bold uppercase">Channel 03</span>
+              <h3 class="text-base font-bold text-white font-display mt-1 mb-2">Viral Bill Loop</h3>
+              <p class="text-xs text-slate-400 leading-relaxed">
+                12-15% organic referral loop powered by customer invoice footers. Every satisfied customer is a potential maker or tutor in their own network.
+              </p>
+            </div>
+
+          </div>
+
+          <div class="fragment fade-in mt-6 glass-pill p-4 flex justify-between items-center text-xs">
+            <div><strong class="text-white">Q1:</strong> 500 Home Bakers</div>
+            <div class="text-slate-600">&rarr;</div>
+            <div><strong class="text-white">Q2:</strong> 2,500 Micro-sellers</div>
+            <div class="text-slate-600">&rarr;</div>
+            <div><strong class="text-white">Q3-Q4:</strong> 10,000+ Pro Sellers (₹3.6 Cr ARR)</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 10: TRACTION & METRICS ================= -->
+      <section data-transition="convex">
+        <div class="max-w-5xl mx-auto text-left">
+          <div class="text-xs uppercase font-black tracking-widest text-emerald-400 mb-2 font-display">Total Addressable Market</div>
+          <h2 class="text-4xl md:text-5xl font-black text-white font-display mb-6">Massive, Underserved & Urgent</h2>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+            <div class="fragment zoom-in glass-card p-5 text-center">
+              <div class="text-4xl font-black text-orange-400 font-display">80M+</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-1 font-semibold">Micro-Sellers in India</div>
+            </div>
+
+            <div class="fragment zoom-in glass-card p-5 text-center" data-fragment-index="1">
+              <div class="text-4xl font-black text-emerald-400 font-display">₹2.5L Cr</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-1 font-semibold">Informal Trade Volume</div>
+            </div>
+
+            <div class="fragment zoom-in glass-card p-5 text-center" data-fragment-index="2">
+              <div class="text-4xl font-black text-rose-500 font-display">100%</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-1 font-semibold">Report Lost Udhaar</div>
+            </div>
+
+            <div class="fragment zoom-in glass-card p-5 text-center" data-fragment-index="3">
+              <div class="text-4xl font-black text-indigo-400 font-display">30 Sec</div>
+              <div class="text-[11px] text-slate-400 uppercase tracking-wider mt-1 font-semibold">Onboarding Time</div>
+            </div>
+          </div>
+
+          <div class="fragment fade-up glass-card p-5 border-l-4 border-l-emerald-400">
+            <h4 class="text-xs font-bold text-white uppercase tracking-wider mb-1">Pre-Validated by History</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Khatabook reached 10M+ businesses with just a basic ledger app without kitchen pipelines, AI parsing, or receipt printers. ZeroKhata takes the next evolutionary leap: <strong>full conversational commerce operations.</strong>
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= SLIDE 11: THE GRAND FINALE ================= -->
+      <section data-transition="zoom">
+        <div class="max-w-4xl mx-auto text-center pt-8 space-y-6">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full glass-pill border-orange-500/30 text-orange-400 text-xs font-bold tracking-wider uppercase animate-float-slow">
+            THE FINAL WORD
+          </div>
+
+          <p class="text-2xl text-slate-300 font-medium">
+            Every month, Sunita has a notebook full of forgotten balances.
+          </p>
+
+          <h2 class="text-6xl md:text-7xl font-black font-display tracking-tight leading-tight">
+            <span class="gradient-text">ZeroKhata makes that Khata zero.</span>
+          </h2>
+
+          <p class="text-xl text-slate-400 max-w-xl mx-auto font-medium">
+            Don't give small businesses bloated software.<br>
+            <strong class="text-white">Give them their time and their money back.</strong>
+          </p>
+
+          <div class="pt-4 flex items-center justify-center gap-4">
+            <button onclick="triggerConfetti()" class="bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 text-white font-extrabold px-8 py-3.5 rounded-2xl text-sm shadow-xl shadow-orange-500/25 transition pulse-glow">
+              🎉 Launch Live App Demo
+            </button>
+            <a href="index.html" target="_blank" class="glass-pill text-white font-bold px-6 py-3.5 rounded-2xl text-sm hover:bg-white/10 transition">
+              Open App Tab &rarr;
+            </a>
+          </div>
+
+          <p class="text-xs text-slate-500 pt-4">Thank you! Ready for questions.</p>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Reveal.js & Custom Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@4.6.1/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      controls: true,
+      progress: true,
+      center: true,
+      transition: 'convex',
+      transitionSpeed: 'default',
+      backgroundTransition: 'fade',
+      mouseWheel: false,
+      keyboard: {
+        38: 'prev',
+        40: 'next'
+      }
+    });
+
+    lucide.createIcons();
+
+    function triggerConfetti() {
+      if (window.confetti) {
+        confetti({
+          particleCount: 100,
+          spread: 80,
+          origin: { y: 0.6 }
+        });
+      }
+      setTimeout(() => {
+        window.open('index.html', '_blank');
+      }, 500);
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+  </script>
+</body>
+</html>

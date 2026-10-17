@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ZeroKhata - Zero Udhaar. Zero Chaos. Zero Learning Curve.</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Canvas Confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              500: '#f97316',
+              600: '#ea580c',
+              700: '#c2410c'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    @media print {
+      body * { visibility: hidden; }
+      #printable-receipt, #printable-receipt * { visibility: visible; }
+      #printable-receipt {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+      }
+    }
+    .custom-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .typing-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #f97316;
+      animation: typing 1.4s infinite ease-in-out;
+      display: inline-block;
+    }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+      40% { transform: scale(1.1); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-gradient-to-r from-orange-600 via-rose-600 to-indigo-600 text-white px-4 py-2 text-xs font-medium flex items-center justify-between shadow-sm">
+    <div class="flex items-center space-x-2">
+      <span class="bg-white/20 px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">Prompt 02</span>
+      <span>The Small Business Revolution — Micro-Business Operating System</span>
+    </div>
+    <div class="flex items-center space-x-2">
+      <button onclick="resetToSampleData()" class="bg-black/25 hover:bg-black/40 px-2.5 py-1 rounded text-xs transition border border-white/20">
+        Reset Demo Data
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      
+      <!-- Brand & Profile -->
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-orange-500 to-rose-600 flex items-center justify-center text-white shadow-md shadow-orange-200">
+          <i data-lucide="zap" class="w-5 h-5"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="font-extrabold text-lg text-slate-900 tracking-tight" id="business-name-display">ZeroKhata Business</h1>
+            <button onclick="editBusinessProfile()" class="text-slate-400 hover:text-slate-600" title="Edit Business Name">
+              <i data-lucide="edit-3" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+          <p class="text-[11px] text-slate-500 flex items-center gap-1.5 font-medium">
+            <span class="inline-block w-2 h-2 rounded-full bg-emerald-500"></span> Zero Udhaar • WhatsApp Direct
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="hidden md:flex items-center space-x-1 bg-slate-100 p-1 rounded-xl">
+        <button onclick="setActiveTab('orders')" id="tab-btn-orders" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg bg-white text-slate-900 shadow-sm transition">
+          <i data-lucide="layout-grid" class="w-3.5 h-3.5 inline mr-1"></i> Orders Board
+        </button>
+        <button onclick="setActiveTab('ai')" id="tab-btn-ai" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5 inline mr-1 text-orange-500"></i> AI Order Parser
+        </button>
+        <button onclick="setActiveTab('khata')" id="tab-btn-khata" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition">
+          <i data-lucide="book-open" class="w-3.5 h-3.5 inline mr-1"></i> Digital Khata
+        </button>
+        <button onclick="setActiveTab('catalog')" id="tab-btn-catalog" class="px-3.5 py-1.5 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900 transition">
+          <i data-lucide="tag" class="w-3.5 h-3.5 inline mr-1"></i> Menu Catalog
+        </button>
+      </nav>
+
+      <!-- Action Button -->
+      <div class="flex items-center space-x-2">
+        <button onclick="openNewOrderModal()" class="bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 hover:to-rose-700 text-white font-semibold px-4 py-2 rounded-xl text-xs flex items-center shadow-md shadow-orange-200 transition active:scale-95">
+          <i data-lucide="plus-circle" class="w-4 h-4 mr-1.5"></i>
+          <span>New Order</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Metric Summary Cards -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-5 pb-2 w-full">
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3.5">
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Today's Revenue</p>
+          <h3 class="text-2xl font-extrabold text-slate-900 mt-0.5" id="stat-revenue">Rs 0</h3>
+          <p class="text-[11px] text-emerald-600 font-semibold mt-0.5" id="stat-revenue-sub">0 orders delivered</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+          <i data-lucide="wallet" class="w-5 h-5"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Pending Due (Udhaar)</p>
+          <h3 class="text-2xl font-extrabold text-rose-600 mt-0.5" id="stat-due">Rs 0</h3>
+          <p class="text-[11px] text-rose-500 font-semibold mt-0.5" id="stat-due-sub">0 orders pending</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center">
+          <i data-lucide="alert-circle" class="w-5 h-5"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Active Pipeline</p>
+          <h3 class="text-2xl font-extrabold text-indigo-600 mt-0.5" id="stat-active-count">0</h3>
+          <p class="text-[11px] text-slate-500 font-semibold mt-0.5" id="stat-active-sub">In kitchen or ready</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+          <i data-lucide="clock" class="w-5 h-5"></i>
+        </div>
+      </div>
+
+      <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div>
+          <p class="text-[11px] font-semibold text-slate-400 uppercase tracking-wider">Today's Deliveries</p>
+          <h3 class="text-2xl font-extrabold text-amber-600 mt-0.5" id="stat-today-deliveries">0</h3>
+          <p class="text-[11px] text-amber-600 font-semibold mt-0.5" id="stat-today-sub">Scheduled for today</p>
+        </div>
+        <div class="w-11 h-11 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center">
+          <i data-lucide="calendar" class="w-5 h-5"></i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main View Container -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 w-full flex-1">
+    
+    <!-- Tab 1: Orders Board / Kanban -->
+    <div id="view-orders">
+      <!-- Search and Filter Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-3 mb-4 bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm">
+        <div class="relative w-full sm:w-80">
+          <i data-lucide="search" class="w-4 h-4 absolute left-3 top-2.5 text-slate-400"></i>
+          <input type="text" id="order-search" oninput="renderOrders()" placeholder="Search customer, phone, item..." class="w-full pl-9 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition">
+        </div>
+        <div class="flex items-center space-x-2 w-full sm:w-auto justify-end">
+          <select id="filter-status" onchange="renderOrders()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <option value="all">All Statuses</option>
+            <option value="NEW">New</option>
+            <option value="PREPARING">Preparing</option>
+            <option value="READY">Ready</option>
+            <option value="DELIVERED">Delivered</option>
+          </select>
+          <select id="filter-payment" onchange="renderOrders()" class="text-xs bg-slate-50 border border-slate-200 rounded-xl px-3 py-1.5 text-slate-700 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            <option value="all">All Payments</option>
+            <option value="unpaid">Balance Due Only</option>
+            <option value="paid">Fully Paid</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Kanban Columns -->
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-start">
+        <!-- New Column -->
+        <div class="bg-slate-100/70 rounded-2xl p-3 border border-slate-200">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center space-x-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+              <h4 class="font-bold text-xs uppercase text-slate-700 tracking-wider">New Orders</h4>
+            </div>
+            <span class="text-xs font-semibold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full" id="count-NEW">0</span>
+          </div>
+          <div id="col-NEW" class="space-y-3 min-h-[160px]"></div>
+        </div>
+
+        <!-- Preparing Column -->
+        <div class="bg-slate-100/70 rounded-2xl p-3 border border-slate-200">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center space-x-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
+              <h4 class="font-bold text-xs uppercase text-slate-700 tracking-wider">In Kitchen / Prep</h4>
+            </div>
+            <span class="text-xs font-semibold bg-blue-100 text-blue-800 px-2 py-0.5 rounded-full" id="count-PREPARING">0</span>
+          </div>
+          <div id="col-PREPARING" class="space-y-3 min-h-[160px]"></div>
+        </div>
+
+        <!-- Ready Column -->
+        <div class="bg-slate-100/70 rounded-2xl p-3 border border-slate-200">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center space-x-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span>
+              <h4 class="font-bold text-xs uppercase text-slate-700 tracking-wider">Ready for Dispatch</h4>
+            </div>
+            <span class="text-xs font-semibold bg-purple-100 text-purple-800 px-2 py-0.5 rounded-full" id="count-READY">0</span>
+          </div>
+          <div id="col-READY" class="space-y-3 min-h-[160px]"></div>
+        </div>
+
+        <!-- Delivered Column -->
+        <div class="bg-slate-100/70 rounded-2xl p-3 border border-slate-200">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <div class="flex items-center space-x-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <h4 class="font-bold text-xs uppercase text-slate-700 tracking-wider">Delivered & Done</h4>
+            </div>
+            <span class="text-xs font-semibold bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full" id="count-DELIVERED">0</span>
+          </div>
+          <div id="col-DELIVERED" class="space-y-3 min-h-[160px]"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2: AI Order Parser -->
+    <div id="view-ai" class="hidden">
+      <div class="bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+        <div class="bg-gradient-to-r from-orange-50 via-rose-50 to-amber-50 p-6 border-b border-orange-100">
+          <div class="flex items-center space-x-3 mb-2">
+            <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-orange-500 to-rose-600 flex items-center justify-center text-white shadow-md shadow-orange-200">
+              <i data-lucide="sparkles" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h2 class="font-extrabold text-slate-900 text-lg leading-tight">AI Voice & WhatsApp Message Parser</h2>
+              <p class="text-xs text-orange-600 font-semibold">Paste raw Hinglish voice transcripts or messy chat texts to extract orders instantly</p>
+            </div>
+          </div>
+          <p class="text-xs text-slate-600 mt-1">Small business owners don't have time to type 6 fields with hands covered in flour or grease. Paste any unstructured message below:</p>
+        </div>
+
+        <!-- Example Quick Buttons -->
+        <div class="px-6 pt-4 pb-1">
+          <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">Try Real Examples:</p>
+          <div class="flex flex-wrap gap-2">
+            <button onclick="loadExample(0)" class="text-xs bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-800 px-3 py-1.5 rounded-xl transition font-medium">
+              Bakery WhatsApp Hindi
+            </button>
+            <button onclick="loadExample(1)" class="text-xs bg-rose-50 hover:bg-rose-100 border border-rose-200 text-rose-800 px-3 py-1.5 rounded-xl transition font-medium">
+              Chaotic Customer Note
+            </button>
+            <button onclick="loadExample(2)" class="text-xs bg-purple-50 hover:bg-purple-100 border border-purple-200 text-purple-800 px-3 py-1.5 rounded-xl transition font-medium">
+              Voice Note Transcript
+            </button>
+            <button onclick="loadExample(3)" class="text-xs bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 text-indigo-800 px-3 py-1.5 rounded-xl transition font-medium">
+              Multi-Item Advance Order
+            </button>
+          </div>
+        </div>
+
+        <div class="p-6 pt-3">
+          <textarea id="ai-input" rows="4" placeholder="Paste unstructured customer message here... (e.g. bhaiya 1kg chocolate cake kal 4 baje chahiye Priya ke liye, 9876543210, 500 advance gpay kar diya)" class="w-full px-4 py-3 text-xs bg-slate-50 border border-slate-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-500 focus:bg-white transition resize-none custom-scroll font-mono text-slate-800"></textarea>
+
+          <div class="flex items-center justify-between mt-3">
+            <span class="text-[11px] text-slate-400">Supports Hindi, Hinglish, English, broken grammar, and voice typos</span>
+            <button onclick="runAIParser()" id="btn-parse-ai" class="bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 hover:to-rose-700 text-white font-bold px-6 py-2 rounded-xl text-xs flex items-center space-x-1.5 shadow-md shadow-orange-200 transition active:scale-95">
+              <i data-lucide="sparkles" class="w-4 h-4"></i>
+              <span>Parse Order Instantly</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Typing Indicator -->
+      <div id="ai-typing" class="hidden mb-4 px-4 flex items-center space-x-3">
+        <div class="bg-white border border-slate-200 rounded-2xl px-4 py-3 flex items-center space-x-2 shadow-sm">
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="typing-dot"></span>
+          <span class="text-xs font-semibold text-slate-500 ml-2">Extracting customer, items, advance and delivery...</span>
+        </div>
+      </div>
+
+      <!-- AI Result Card -->
+      <div id="ai-result" class="hidden bg-white rounded-3xl border border-slate-200 shadow-sm overflow-hidden mb-6">
+        <div class="bg-gradient-to-r from-emerald-50 to-teal-50 px-6 py-3 border-b border-emerald-100 flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+            <span class="text-xs font-bold text-emerald-800 uppercase tracking-wider">Order Data Extracted Successfully</span>
+          </div>
+          <span class="text-[11px] font-bold text-emerald-700 bg-emerald-100/70 px-2.5 py-0.5 rounded-full">AI Confidence: High</span>
+        </div>
+
+        <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="space-y-3" id="ai-fields">
+            <!-- Populated via JS -->
+          </div>
+          <div>
+            <h4 class="text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-2">Financial Breakdown</h4>
+            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-200 space-y-2 text-xs" id="ai-finance">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="px-6 pb-6 flex flex-col sm:flex-row gap-3">
+          <button onclick="confirmAIOrder()" class="flex-1 bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 hover:to-rose-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-md shadow-orange-200 transition">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Confirm & Add to Orders Board</span>
+          </button>
+          <button onclick="sendAIWhatsApp()" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 rounded-xl text-xs flex items-center justify-center space-x-2 shadow-md shadow-emerald-200 transition">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>Confirm + Open WhatsApp Invoice</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3: Khata (Customer Ledger & Debt Tracker) -->
+    <div id="view-khata" class="hidden">
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 mb-4">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3">
+          <div>
+            <h3 class="text-base font-extrabold text-slate-900">Digital Khata (Customer Balance Book)</h3>
+            <p class="text-xs text-slate-500">Track pending balances, total lifetime spend, and send 1-click WhatsApp payment reminders.</p>
+          </div>
+          <div class="flex items-center space-x-2">
+            <div class="bg-rose-50 text-rose-700 px-3.5 py-2 rounded-xl text-xs font-bold border border-rose-200" id="khata-total-due-banner">
+              Total Market Credit: Rs 0
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-600">
+            <thead class="bg-slate-50 text-slate-700 font-bold uppercase tracking-wider border-b border-slate-200">
+              <tr>
+                <th class="p-3.5">Customer</th>
+                <th class="p-3.5">Phone</th>
+                <th class="p-3.5">Orders</th>
+                <th class="p-3.5">Total Spent</th>
+                <th class="p-3.5">Pending Due</th>
+                <th class="p-3.5 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="khata-table-body" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 4: Menu & Catalog Management -->
+    <div id="view-catalog" class="hidden">
+      <div class="flex items-center justify-between mb-4 bg-white p-4 rounded-2xl border border-slate-200 shadow-sm">
+        <div>
+          <h3 class="text-base font-extrabold text-slate-900">Product & Flavor Catalog</h3>
+          <p class="text-xs text-slate-500">Pre-configured items for rapid 1-tap order creation.</p>
+        </div>
+        <button onclick="openNewCatalogItemModal()" class="bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 hover:to-rose-700 text-white font-bold px-3.5 py-2 rounded-xl text-xs flex items-center shadow-sm">
+          <i data-lucide="plus" class="w-4 h-4 mr-1"></i> Add Product
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5" id="catalog-grid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t border-slate-200 py-3 text-center text-xs text-slate-400">
+    ZeroKhata • The WhatsApp Operating System for 80M Micro-Entrepreneurs • Prompt 02
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- Modal: Create / Edit Order -->
+  <div id="order-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-slate-100 my-8">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center">
+          <i data-lucide="shopping-bag" class="w-4 h-4 mr-2 text-orange-600"></i>
+          <span id="modal-order-title">Create New Customer Order</span>
+        </h3>
+        <button onclick="closeModal('order-modal')" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="order-form" onsubmit="handleSaveOrder(event)" class="mt-4 space-y-3.5">
+        <input type="hidden" id="form-order-id">
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Customer Name *</label>
+            <input type="text" id="form-customer-name" required placeholder="e.g. Priya Sharma" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">WhatsApp / Phone *</label>
+            <input type="tel" id="form-customer-phone" required placeholder="e.g. 9876543210" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none">
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Delivery / Pickup Date *</label>
+            <input type="date" id="form-delivery-date" required class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">Delivery Time *</label>
+            <input type="time" id="form-delivery-time" required class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none">
+          </div>
+        </div>
+
+        <!-- Items Picker -->
+        <div>
+          <div class="flex items-center justify-between mb-1">
+            <label class="block text-xs font-semibold text-slate-700">Order Items *</label>
+            <button type="button" onclick="addOrderItemRow()" class="text-xs font-semibold text-orange-600 hover:text-orange-700 flex items-center">
+              <i data-lucide="plus" class="w-3 h-3 mr-0.5"></i> Add Item
+            </button>
+          </div>
+          <div id="order-items-list" class="space-y-2 max-h-44 overflow-y-auto custom-scroll p-1 bg-slate-50 rounded-xl border border-slate-200">
+            <!-- Dynamic Item Rows -->
+          </div>
+        </div>
+
+        <!-- Custom Notes -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Special Instructions / Inscription</label>
+          <input type="text" id="form-notes" placeholder="e.g. 'Happy 25th Anniversary Anita!', eggless, extra frosting" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none">
+        </div>
+
+        <!-- Financial Breakdown -->
+        <div class="bg-orange-50/70 p-3.5 rounded-2xl border border-orange-100 space-y-2">
+          <div class="flex justify-between items-center text-xs">
+            <span class="font-medium text-slate-600">Total Order Amount:</span>
+            <span class="font-bold text-slate-900 text-sm" id="calc-total">Rs 0.00</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 pt-2 border-t border-orange-200/60">
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-700 mb-1">Advance Received (Rs)</label>
+              <input type="number" step="10" id="form-advance-paid" oninput="recalcDue()" value="0" class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-xl font-bold text-slate-800 focus:ring-2 focus:ring-orange-500">
+            </div>
+            <div>
+              <label class="block text-[11px] font-semibold text-slate-700 mb-1">Payment Mode</label>
+              <select id="form-payment-mode" class="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-xl text-slate-800">
+                <option value="UPI / GPay">UPI / GPay</option>
+                <option value="Cash">Cash</option>
+                <option value="PhonePe">PhonePe</option>
+                <option value="Paytm">Paytm</option>
+                <option value="Card">Card</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="flex justify-between items-center text-xs pt-2 text-rose-800 font-semibold">
+            <span>Balance Due on Delivery:</span>
+            <span class="text-sm font-extrabold" id="calc-due">Rs 0.00</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('order-modal')" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition">Cancel</button>
+          <button type="submit" class="bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 hover:to-rose-700 text-white font-semibold px-5 py-2 text-xs rounded-xl shadow-md shadow-orange-200 transition">Save Order</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Modal: WhatsApp Bill Preview & Send -->
+  <div id="whatsapp-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-100">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="text-sm font-bold text-slate-900 flex items-center">
+          <i data-lucide="message-circle" class="w-5 h-5 mr-2 text-emerald-600"></i>
+          <span>Instant WhatsApp Invoice</span>
+        </h3>
+        <button onclick="closeModal('whatsapp-modal')" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <div class="mt-4">
+        <p class="text-xs text-slate-500 mb-2">Formatted ready to dispatch directly to the customer's chat:</p>
+        <div class="bg-emerald-50/50 border border-emerald-200 rounded-2xl p-3.5 text-xs text-slate-800 font-mono whitespace-pre-wrap max-h-56 overflow-y-auto custom-scroll" id="whatsapp-preview-text">
+        </div>
+      </div>
+
+      <div class="mt-4 flex items-center justify-between gap-2">
+        <button onclick="copyWhatsAppMessage()" class="px-3.5 py-2 text-xs font-semibold text-slate-700 border border-slate-200 hover:bg-slate-50 rounded-xl flex items-center transition">
+          <i data-lucide="copy" class="w-4 h-4 mr-1.5 text-slate-500"></i> Copy Text
+        </button>
+        <button onclick="triggerWhatsAppRedirect()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2 text-xs rounded-xl flex items-center shadow-md shadow-emerald-200 transition">
+          <i data-lucide="send" class="w-4 h-4 mr-1.5"></i> Open WhatsApp
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Printable Thermal Receipt / Invoice -->
+  <div id="receipt-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-5 shadow-2xl my-8">
+      <div class="flex items-center justify-between pb-2 border-b border-slate-100">
+        <h3 class="text-sm font-bold text-slate-800">Customer Bill / Receipt</h3>
+        <button onclick="closeModal('receipt-modal')" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+
+      <!-- Printable Area -->
+      <div id="printable-receipt" class="mt-4 bg-white p-4 border border-slate-200 rounded-xl font-mono text-xs">
+        <div class="text-center pb-3 border-b border-dashed border-slate-300">
+          <h2 class="font-extrabold text-sm text-slate-900" id="receipt-biz-name">ZeroKhata Business</h2>
+          <p class="text-[10px] text-slate-500">Fresh Custom Bakes & Confectionery</p>
+          <div class="mt-1.5 text-[11px] font-bold text-slate-700" id="receipt-order-no">ORDER #ORD-101</div>
+          <div class="text-[10px] text-slate-400" id="receipt-date">Oct 17, 2026 • 04:30 PM</div>
+        </div>
+
+        <div class="py-2 border-b border-dashed border-slate-300 text-[11px] space-y-0.5">
+          <p><strong>Customer:</strong> <span id="receipt-cust-name">Anita Patel</span></p>
+          <p><strong>Phone:</strong> <span id="receipt-cust-phone">9876543210</span></p>
+          <p><strong>Delivery:</strong> <span id="receipt-delivery-time">Today, 5:00 PM</span></p>
+        </div>
+
+        <div class="py-2 border-b border-dashed border-slate-300 space-y-1 text-[11px]" id="receipt-items-list">
+          <!-- Items inserted here -->
+        </div>
+
+        <div class="py-2 border-b border-dashed border-slate-300 space-y-1 text-[11px]">
+          <div class="flex justify-between">
+            <span>Total Amount:</span>
+            <span class="font-bold" id="receipt-total">Rs 0.00</span>
+          </div>
+          <div class="flex justify-between text-emerald-600">
+            <span>Advance Received:</span>
+            <span id="receipt-advance">Rs 0.00</span>
+          </div>
+          <div class="flex justify-between font-extrabold text-rose-600 text-xs pt-1">
+            <span>BALANCE DUE:</span>
+            <span id="receipt-due">Rs 0.00</span>
+          </div>
+        </div>
+
+        <div class="pt-3 text-center text-[10px] text-slate-500">
+          <p>Thank you for choosing local! Scan to Pay:</p>
+          <div class="mt-2 inline-block bg-slate-50 p-2 rounded-lg border border-slate-200">
+            <div class="w-20 h-20 bg-slate-100 mx-auto flex items-center justify-center text-slate-400 font-sans text-[10px] rounded">
+              UPI QR
+            </div>
+            <p class="mt-1 text-[9px] text-slate-400">GPay • PhonePe • Paytm</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-4">
+        <button onclick="window.print()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center shadow">
+          <i data-lucide="printer" class="w-4 h-4 mr-1.5"></i> Print / Save as PDF
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Add New Product to Catalog -->
+  <div id="catalog-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-100">
+      <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+        <h3 class="text-sm font-bold text-slate-900">Add Menu Item</h3>
+        <button onclick="closeModal('catalog-modal')" class="text-slate-400 hover:text-slate-600">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleSaveCatalogItem(event)" class="mt-4 space-y-3">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Product Name</label>
+          <input type="text" id="cat-name" required placeholder="e.g. Red Velvet Cupcakes (Box of 6)" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none">
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Category</label>
+          <select id="cat-category" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:outline-none">
+            <option value="Cakes">Cakes</option>
+            <option value="Cupcakes & Cookies">Cupcakes & Cookies</option>
+            <option value="Custom Add-ons">Custom Add-ons</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Standard Price (Rs)</label>
+          <input type="number" step="10" id="cat-price" required placeholder="450" class="w-full px-3 py-2 text-xs border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none">
+        </div>
+        <div class="flex justify-end space-x-2 pt-2">
+          <button type="button" onclick="closeModal('catalog-modal')" class="px-3 py-1.5 text-xs text-slate-600 hover:bg-slate-100 rounded-xl">Cancel</button>
+          <button type="submit" class="bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-600 text-white font-semibold px-4 py-1.5 text-xs rounded-xl">Add Item</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- APPLICATION JAVASCRIPT -->
+  <script>
+    const STORAGE_KEY_ORDERS = 'zk_orders_v1';
+    const STORAGE_KEY_CATALOG = 'zk_catalog_v1';
+    const STORAGE_KEY_BIZ = 'zk_biz_v1';
+
+    const SAMPLE_CATALOG = [
+      { id: 'cat-1', name: 'Belgian Chocolate Truffle (1 kg)', category: 'Cakes', price: 950 },
+      { id: 'cat-2', name: 'Fresh Strawberry Cream Cake (1 kg)', category: 'Cakes', price: 1100 },
+      { id: 'cat-3', name: 'Red Velvet Cupcakes (Box of 6)', category: 'Cupcakes & Cookies', price: 480 },
+      { id: 'cat-4', name: 'Biscoff Cheesecake Slice', category: 'Cakes', price: 220 },
+      { id: 'cat-5', name: 'Custom Fondant Theme Topper', category: 'Custom Add-ons', price: 350 },
+      { id: 'cat-6', name: 'Fudge Brownie Assortment (Box of 4)', category: 'Cupcakes & Cookies', price: 380 }
+    ];
+
+    const SAMPLE_ORDERS = [
+      {
+        id: 'ORD-101',
+        customerName: 'Priya Sharma',
+        customerPhone: '9876543210',
+        deliveryDate: new Date().toISOString().split('T')[0],
+        deliveryTime: '16:30',
+        status: 'PREPARING',
+        notes: 'Write "Happy 25th Anniversary!", Eggless',
+        items: [
+          { name: 'Belgian Chocolate Truffle (1 kg)', qty: 1, price: 950 },
+          { name: 'Custom Fondant Theme Topper', qty: 1, price: 350 }
+        ],
+        advancePaid: 700,
+        paymentMode: 'UPI / GPay',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 'ORD-102',
+        customerName: 'Rahul Verma',
+        customerPhone: '9123456780',
+        deliveryDate: new Date().toISOString().split('T')[0],
+        deliveryTime: '18:00',
+        status: 'NEW',
+        notes: 'Less sugar, deliver to Apartment 402',
+        items: [
+          { name: 'Fresh Strawberry Cream Cake (1 kg)', qty: 1, price: 1100 }
+        ],
+        advancePaid: 500,
+        paymentMode: 'UPI / GPay',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 'ORD-103',
+        customerName: 'Ayesha Khan',
+        customerPhone: '9898989898',
+        deliveryDate: new Date().toISOString().split('T')[0],
+        deliveryTime: '14:00',
+        status: 'READY',
+        notes: 'Customer will self-pickup at door',
+        items: [
+          { name: 'Red Velvet Cupcakes (Box of 6)', qty: 2, price: 480 }
+        ],
+        advancePaid: 960,
+        paymentMode: 'Cash',
+        createdAt: new Date().toISOString()
+      },
+      {
+        id: 'ORD-104',
+        customerName: 'Rohan Malhotra',
+        customerPhone: '9765432190',
+        deliveryDate: new Date(Date.now() - 86400000).toISOString().split('T')[0],
+        deliveryTime: '17:00',
+        status: 'DELIVERED',
+        notes: 'Birthday party delivery completed',
+        items: [
+          { name: 'Fudge Brownie Assortment (Box of 4)', qty: 3, price: 380 }
+        ],
+        advancePaid: 1140,
+        paymentMode: 'UPI / GPay',
+        createdAt: new Date(Date.now() - 86400000).toISOString()
+      }
+    ];
+
+    let orders = [];
+    let catalog = [];
+    let businessProfile = {
+      name: 'ZeroKhata Business',
+      phone: '+91 98765 43210'
+    };
+
+    function initApp() {
+      const storedOrders = localStorage.getItem(STORAGE_KEY_ORDERS);
+      const storedCatalog = localStorage.getItem(STORAGE_KEY_CATALOG);
+      const storedBiz = localStorage.getItem(STORAGE_KEY_BIZ);
+
+      orders = storedOrders ? JSON.parse(storedOrders) : SAMPLE_ORDERS;
+      catalog = storedCatalog ? JSON.parse(storedCatalog) : SAMPLE_CATALOG;
+      if (storedBiz) businessProfile = JSON.parse(storedBiz);
+
+      saveData();
+      renderAll();
+      lucide.createIcons();
+    }
+
+    function saveData() {
+      localStorage.setItem(STORAGE_KEY_ORDERS, JSON.stringify(orders));
+      localStorage.setItem(STORAGE_KEY_CATALOG, JSON.stringify(catalog));
+      localStorage.setItem(STORAGE_KEY_BIZ, JSON.stringify(businessProfile));
+    }
+
+    function resetToSampleData() {
+      if (confirm("Reset everything to demo data?")) {
+        orders = [...SAMPLE_ORDERS];
+        catalog = [...SAMPLE_CATALOG];
+        businessProfile = { name: 'ZeroKhata Business', phone: '+91 98765 43210' };
+        saveData();
+        renderAll();
+        if (window.confetti) confetti({ particleCount: 50, spread: 60 });
+      }
+    }
+
+    function renderAll() {
+      document.getElementById('business-name-display').innerText = businessProfile.name;
+      renderStats();
+      renderOrders();
+      renderKhata();
+      renderCatalog();
+      lucide.createIcons();
+    }
+
+    // --- METRICS / STATS ---
+    function renderStats() {
+      const todayStr = new Date().toISOString().split('T')[0];
+      let deliveredRev = 0, deliveredCount = 0, totalDue = 0, dueCount = 0, activeCount = 0, todayDeliveries = 0;
+
+      orders.forEach(o => {
+        const total = o.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const due = Math.max(0, total - (o.advancePaid || 0));
+
+        if (o.status === 'DELIVERED') {
+          deliveredRev += total;
+          deliveredCount++;
+        } else if (o.status !== 'CANCELLED') {
+          activeCount++;
+        }
+
+        if (due > 0 && o.status !== 'CANCELLED') {
+          totalDue += due;
+          dueCount++;
+        }
+
+        if (o.deliveryDate === todayStr && o.status !== 'CANCELLED') {
+          todayDeliveries++;
+        }
+      });
+
+      document.getElementById('stat-revenue').innerText = `Rs ${deliveredRev.toLocaleString()}`;
+      document.getElementById('stat-revenue-sub').innerText = `${deliveredCount} delivered orders`;
+      document.getElementById('stat-due').innerText = `Rs ${totalDue.toLocaleString()}`;
+      document.getElementById('stat-due-sub').innerText = `${dueCount} orders pending payment`;
+      document.getElementById('stat-active-count').innerText = activeCount;
+      document.getElementById('stat-today-deliveries').innerText = todayDeliveries;
+    }
+
+    // --- TAB SWITCHER ---
+    function setActiveTab(tab) {
+      ['orders', 'ai', 'khata', 'catalog'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`tab-btn-${t}`);
+        if (btn) {
+          btn.classList.remove('bg-white', 'text-slate-900', 'shadow-sm');
+          btn.classList.add('text-slate-600');
+        }
+      });
+
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-white', 'text-slate-900', 'shadow-sm');
+        activeBtn.classList.remove('text-slate-600');
+      }
+      lucide.createIcons();
+    }
+
+    // --- KANBAN ORDERS RENDERING ---
+    function renderOrders() {
+      const cols = {
+        NEW: document.getElementById('col-NEW'),
+        PREPARING: document.getElementById('col-PREPARING'),
+        READY: document.getElementById('col-READY'),
+        DELIVERED: document.getElementById('col-DELIVERED')
+      };
+
+      const counts = { NEW: 0, PREPARING: 0, READY: 0, DELIVERED: 0 };
+      Object.values(cols).forEach(el => el.innerHTML = '');
+
+      const searchTerm = (document.getElementById('order-search').value || '').toLowerCase();
+      const statusFilter = document.getElementById('filter-status').value;
+      const paymentFilter = document.getElementById('filter-payment').value;
+
+      orders.forEach(order => {
+        const total = order.items.reduce((sum, item) => sum + (item.price * item.qty), 0);
+        const due = Math.max(0, total - (order.advancePaid || 0));
+
+        if (statusFilter !== 'all' && order.status !== statusFilter) return;
+        if (paymentFilter === 'unpaid' && due <= 0) return;
+        if (paymentFilter === 'paid' && due > 0) return;
+
+        const matchesSearch = 
+          order.customerName.toLowerCase().includes(searchTerm) ||
+          order.customerPhone.includes(searchTerm) ||
+          order.id.toLowerCase().includes(searchTerm) ||
+          order.items.some(i => i.name.toLowerCase().includes(searchTerm));
+
+        if (!matchesSearch) return;
+
+        if (counts[order.status] !== undefined) counts[order.status]++;
+
+        const col = cols[order.status];
+        if (!col) return;
+
+        const card = document.createElement('div');
+        card.className = "bg-white p-3.5 rounded-2xl border border-slate-200 shadow-sm hover:shadow transition space-y-2.5";
+        
+        const isToday = order.deliveryDate === new Date().toISOString().split('T')[0];
+
+        card.innerHTML = `
+          <div class="flex items-start justify-between">
+            <div>
+              <span class="text-[10px] font-mono font-bold text-slate-400">${order.id}</span>
+              <h5 class="font-bold text-sm text-slate-900">${escapeHtml(order.customerName)}</h5>
+              <p class="text-[11px] text-slate-500 flex items-center mt-0.5">
+                <i data-lucide="phone" class="w-3 h-3 mr-1 text-slate-400"></i> ${order.customerPhone}
+              </p>
+            </div>
+            <span class="px-2 py-0.5 text-[10px] font-bold rounded-full ${isToday ? 'bg-amber-100 text-amber-800 border border-amber-200' : 'bg-slate-100 text-slate-600'}">
+              ${isToday ? 'Today' : order.deliveryDate} • ${order.deliveryTime}
+            </span>
+          </div>
+
+          <div class="bg-slate-50 rounded-xl p-2 text-xs space-y-1 text-slate-700">
+            ${order.items.map(it => `
+              <div class="flex justify-between">
+                <span><strong class="text-slate-900">${it.qty}x</strong> ${escapeHtml(it.name)}</span>
+                <span class="font-semibold text-slate-900">Rs ${(it.price * it.qty).toLocaleString()}</span>
+              </div>
+            `).join('')}
+            ${order.notes ? `
+              <p class="text-[11px] text-rose-600 italic pt-1 border-t border-slate-200/60">
+                Note: "${escapeHtml(order.notes)}"
+              </p>
+            ` : ''}
+          </div>
+
+          <div class="flex items-center justify-between text-xs pt-1">
+            <div>
+              <span class="text-slate-500">Total:</span> <strong class="text-slate-900">Rs ${total.toLocaleString()}</strong>
+            </div>
+            ${due > 0 ? `
+              <span class="bg-rose-50 text-rose-700 font-bold px-2 py-0.5 rounded text-[11px] border border-rose-200">
+                Due: Rs ${due.toLocaleString()}
+              </span>
+            ` : `
+              <span class="bg-emerald-50 text-emerald-700 font-bold px-2 py-0.5 rounded text-[11px] border border-emerald-200 flex items-center">
+                <i data-lucide="check" class="w-3 h-3 mr-0.5"></i> Paid
+              </span>
+            `}
+          </div>
+
+          <div class="flex items-center justify-between pt-2 border-t border-slate-100 gap-1 text-xs">
+            <div class="flex space-x-1">
+              <button onclick="openWhatsAppModal('${order.id}')" title="Send WhatsApp Message" class="p-1.5 rounded-lg bg-emerald-50 text-emerald-600 hover:bg-emerald-100 transition">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+              </button>
+              <button onclick="openReceiptModal('${order.id}')" title="Print Bill / Receipt" class="p-1.5 rounded-lg bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
+                <i data-lucide="receipt" class="w-4 h-4"></i>
+              </button>
+              <button onclick="deleteOrder('${order.id}')" title="Delete" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <div>
+              ${getNextStatusButton(order)}
+            </div>
+          </div>
+        `;
+        col.appendChild(card);
+      });
+
+      Object.keys(counts).forEach(k => {
+        const el = document.getElementById(`count-${k}`);
+        if (el) el.innerText = counts[k];
+      });
+
+      lucide.createIcons();
+    }
+
+    function getNextStatusButton(order) {
+      if (order.status === 'NEW') {
+        return `<button onclick="advanceOrderStatus('${order.id}', 'PREPARING')" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-2.5 py-1 rounded-lg text-[11px] transition">Start Prep &rarr;</button>`;
+      } else if (order.status === 'PREPARING') {
+        return `<button onclick="advanceOrderStatus('${order.id}', 'READY')" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold px-2.5 py-1 rounded-lg text-[11px] transition">Mark Ready &rarr;</button>`;
+      } else if (order.status === 'READY') {
+        return `<button onclick="advanceOrderStatus('${order.id}', 'DELIVERED')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-2.5 py-1 rounded-lg text-[11px] transition flex items-center">Deliver <i data-lucide="check" class="w-3 h-3 ml-1"></i></button>`;
+      } else {
+        return `<span class="text-[11px] font-bold text-emerald-600 flex items-center"><i data-lucide="check-check" class="w-3.5 h-3.5 mr-1"></i> Done</span>`;
+      }
+    }
+
+    function advanceOrderStatus(orderId, newStatus) {
+      const ord = orders.find(o => o.id === orderId);
+      if (ord) {
+        ord.status = newStatus;
+        if (newStatus === 'DELIVERED') {
+          if (window.confetti) confetti({ particleCount: 70, spread: 70 });
+        }
+        saveData();
+        renderAll();
+      }
+    }
+
+    function deleteOrder(orderId) {
+      if (confirm(`Delete order ${orderId}?`)) {
+        orders = orders.filter(o => o.id !== orderId);
+        saveData();
+        renderAll();
+      }
+    }
+
+    // --- DIGITAL KHATA ---
+    function renderKhata() {
+      const tbody = document.getElementById('khata-table-body');
+      tbody.innerHTML = '';
+
+      const customerMap = {};
+      orders.forEach(o => {
+        if (!customerMap[o.customerPhone]) {
+          customerMap[o.customerPhone] = {
+            name: o.customerName,
+            phone: o.customerPhone,
+            ordersCount: 0,
+            totalSpent: 0,
+            pendingDue: 0
+          };
+        }
+        const cust = customerMap[o.customerPhone];
+        cust.ordersCount++;
+        const total = o.items.reduce((s, it) => s + (it.price * it.qty), 0);
+        cust.totalSpent += total;
+        cust.pendingDue += Math.max(0, total - (o.advancePaid || 0));
+      });
+
+      const customerList = Object.values(customerMap);
+      customerList.sort((a, b) => b.pendingDue - a.pendingDue);
+
+      let totalMarketDue = 0;
+
+      customerList.forEach(c => {
+        totalMarketDue += c.pendingDue;
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="p-3.5 font-bold text-slate-900">${escapeHtml(c.name)}</td>
+          <td class="p-3.5 font-mono text-slate-500">${c.phone}</td>
+          <td class="p-3.5">${c.ordersCount} orders</td>
+          <td class="p-3.5 font-semibold text-slate-800">Rs ${c.totalSpent.toLocaleString()}</td>
+          <td class="p-3.5">
+            ${c.pendingDue > 0 ? `
+              <span class="bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded text-xs">
+                Rs ${c.pendingDue.toLocaleString()} DUE
+              </span>
+            ` : `
+              <span class="text-emerald-600 font-medium text-xs">Clear (All Paid)</span>
+            `}
+          </td>
+          <td class="p-3.5 text-right">
+            ${c.pendingDue > 0 ? `
+              <button onclick="sendDuePaymentReminder('${escapeHtml(c.name)}', '${c.phone}', ${c.pendingDue})" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center ml-auto transition border border-emerald-200">
+                <i data-lucide="bell" class="w-3.5 h-3.5 mr-1"></i> Send WhatsApp Reminder
+              </button>
+            ` : `
+              <span class="text-slate-400 text-xs">-</span>
+            `}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('khata-total-due-banner').innerText = `Total Market Credit: Rs ${totalMarketDue.toLocaleString()}`;
+      lucide.createIcons();
+    }
+
+    function sendDuePaymentReminder(name, phone, due) {
+      const cleanPhone = phone.replace(/\D/g, '');
+      const msg = `Namaste ${name}! \u{1F64F}\n\nThis is a gentle reminder from *${businessProfile.name}* regarding your pending balance of *Rs ${due.toLocaleString()}*.\n\nYou can pay via GPay / PhonePe / UPI or Cash. Thank you for supporting our local business! \u{2764}\u{FE0F}\n\n— ${businessProfile.name}`;
+      const url = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank');
+    }
+
+    // --- MENU / CATALOG ---
+    function renderCatalog() {
+      const grid = document.getElementById('catalog-grid');
+      grid.innerHTML = '';
+
+      catalog.forEach(item => {
+        const div = document.createElement('div');
+        div.className = "bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between hover:border-slate-300 transition";
+        div.innerHTML = `
+          <div>
+            <span class="text-[10px] uppercase font-bold text-orange-600 bg-orange-50 px-2 py-0.5 rounded-md">${item.category}</span>
+            <h4 class="font-bold text-sm text-slate-900 mt-1">${escapeHtml(item.name)}</h4>
+            <p class="text-xs font-bold text-slate-800 mt-0.5">Rs ${item.price.toLocaleString()}</p>
+          </div>
+          <button onclick="deleteCatalogItem('${item.id}')" class="text-slate-400 hover:text-rose-600 p-2 rounded-xl hover:bg-rose-50 transition">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        `;
+        grid.appendChild(div);
+      });
+      lucide.createIcons();
+    }
+
+    function openNewCatalogItemModal() {
+      document.getElementById('cat-name').value = '';
+      document.getElementById('cat-price').value = '';
+      openModal('catalog-modal');
+    }
+
+    function handleSaveCatalogItem(e) {
+      e.preventDefault();
+      const name = document.getElementById('cat-name').value;
+      const category = document.getElementById('cat-category').value;
+      const price = parseFloat(document.getElementById('cat-price').value) || 0;
+
+      catalog.push({
+        id: 'cat-' + Date.now(),
+        name,
+        category,
+        price
+      });
+
+      saveData();
+      renderCatalog();
+      closeModal('catalog-modal');
+    }
+
+    function deleteCatalogItem(id) {
+      if (confirm("Remove this product from the menu?")) {
+        catalog = catalog.filter(c => c.id !== id);
+        saveData();
+        renderCatalog();
+      }
+    }
+
+    // --- NEW ORDER FORM ---
+    function openNewOrderModal() {
+      document.getElementById('form-order-id').value = '';
+      document.getElementById('modal-order-title').innerText = 'Create New Customer Order';
+      document.getElementById('form-customer-name').value = '';
+      document.getElementById('form-customer-phone').value = '';
+      document.getElementById('form-delivery-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('form-delivery-time').value = '16:00';
+      document.getElementById('form-notes').value = '';
+      document.getElementById('form-advance-paid').value = '0';
+      
+      const itemsList = document.getElementById('order-items-list');
+      itemsList.innerHTML = '';
+      addOrderItemRow();
+      recalcDue();
+
+      openModal('order-modal');
+    }
+
+    function addOrderItemRow(selectedName = '', qty = 1, price = 0) {
+      const container = document.getElementById('order-items-list');
+      const row = document.createElement('div');
+      row.className = "flex items-center space-x-2 order-item-row";
+      
+      const optionsHtml = catalog.map(c => `
+        <option value="${escapeHtml(c.name)}" data-price="${c.price}" ${c.name === selectedName ? 'selected' : ''}>
+          ${escapeHtml(c.name)} (Rs ${c.price})
+        </option>
+      `).join('');
+
+      row.innerHTML = `
+        <select onchange="onItemSelect(this)" class="item-name-input flex-1 px-2.5 py-1.5 text-xs bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-orange-500">
+          <option value="">-- Choose from Menu --</option>
+          ${optionsHtml}
+          <option value="custom">\u{270F}\u{FE0F} Custom Item / Addon...</option>
+        </select>
+        <input type="number" min="1" value="${qty}" oninput="recalcDue()" class="item-qty-input w-16 px-2 py-1.5 text-xs bg-white border border-slate-200 rounded-xl text-center" placeholder="Qty">
+        <input type="number" step="10" value="${price || (catalog[0]?.price || 0)}" oninput="recalcDue()" class="item-price-input w-24 px-2 py-1.5 text-xs bg-white border border-slate-200 rounded-xl" placeholder="Rs Price">
+        <button type="button" onclick="this.parentElement.remove(); recalcDue();" class="text-slate-400 hover:text-rose-600 p-1">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      `;
+
+      container.appendChild(row);
+      lucide.createIcons();
+      recalcDue();
+    }
+
+    function onItemSelect(selectEl) {
+      const row = selectEl.parentElement;
+      const priceInput = row.querySelector('.item-price-input');
+      const selectedOption = selectEl.options[selectEl.selectedIndex];
+
+      if (selectEl.value === 'custom') {
+        const customName = prompt("Enter custom item or addon name:");
+        if (customName) {
+          const opt = document.createElement('option');
+          opt.value = customName;
+          opt.text = customName;
+          opt.selected = true;
+          selectEl.add(opt, selectEl.options[selectEl.length - 1]);
+          priceInput.value = '250';
+        }
+      } else {
+        const p = selectedOption.getAttribute('data-price');
+        if (p) priceInput.value = p;
+      }
+      recalcDue();
+    }
+
+    function recalcDue() {
+      let total = 0;
+      const rows = document.querySelectorAll('.order-item-row');
+      rows.forEach(r => {
+        const qty = parseFloat(r.querySelector('.item-qty-input')?.value) || 0;
+        const price = parseFloat(r.querySelector('.item-price-input')?.value) || 0;
+        total += (qty * price);
+      });
+
+      const advance = parseFloat(document.getElementById('form-advance-paid').value) || 0;
+      const due = Math.max(0, total - advance);
+
+      document.getElementById('calc-total').innerText = `Rs ${total.toLocaleString()}`;
+      document.getElementById('calc-due').innerText = `Rs ${due.toLocaleString()}`;
+    }
+
+    function handleSaveOrder(e) {
+      e.preventDefault();
+
+      const items = [];
+      document.querySelectorAll('.order-item-row').forEach(r => {
+        const select = r.querySelector('.item-name-input');
+        const name = select.value;
+        const qty = parseInt(r.querySelector('.item-qty-input').value) || 1;
+        const price = parseFloat(r.querySelector('.item-price-input').value) || 0;
+        if (name) {
+          items.push({ name, qty, price });
+        }
+      });
+
+      if (items.length === 0) {
+        alert("Please select or add at least one item.");
+        return;
+      }
+
+      const newOrder = {
+        id: 'ORD-' + (100 + orders.length + 1),
+        customerName: document.getElementById('form-customer-name').value.trim(),
+        customerPhone: document.getElementById('form-customer-phone').value.trim(),
+        deliveryDate: document.getElementById('form-delivery-date').value,
+        deliveryTime: document.getElementById('form-delivery-time').value,
+        notes: document.getElementById('form-notes').value.trim(),
+        advancePaid: parseFloat(document.getElementById('form-advance-paid').value) || 0,
+        paymentMode: document.getElementById('form-payment-mode').value,
+        status: 'NEW',
+        items,
+        createdAt: new Date().toISOString()
+      };
+
+      orders.unshift(newOrder);
+      saveData();
+      renderAll();
+      closeModal('order-modal');
+
+      setTimeout(() => {
+        if (confirm("Order saved! Would you like to preview & send the WhatsApp invoice now?")) {
+          openWhatsAppModal(newOrder.id);
+        }
+      }, 300);
+    }
+
+    // --- WHATSAPP INVOICE GENERATOR ---
+    let currentWhatsAppUrl = '';
+    let currentWhatsAppText = '';
+
+    function openWhatsAppModal(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return;
+
+      const total = order.items.reduce((s, it) => s + (it.price * it.qty), 0);
+      const due = Math.max(0, total - (order.advancePaid || 0));
+      const itemsFormatted = order.items.map(it => `\u{2022} ${it.qty}x ${it.name} - Rs ${(it.price * it.qty).toLocaleString()}`).join('\n');
+
+      const msg = 
+`\u{1F382} *${businessProfile.name.toUpperCase()}*
+*Order Confirmation & Invoice*
+--------------------------------
+\u{1F4CB} *Order ID:* #${order.id}
+\u{1F464} *Customer:* ${order.customerName}
+\u{1F4C5} *Delivery:* ${order.deliveryDate} at ${order.deliveryTime}
+
+\u{1F4E6} *Items Ordered:*
+${itemsFormatted}
+${order.notes ? `\n\u{1F4DD} *Notes:* "${order.notes}"` : ''}
+--------------------------------
+\u{1F4B0} *Total Amount:* Rs ${total.toLocaleString()}
+\u{2705} *Advance Paid:* Rs ${order.advancePaid.toLocaleString()} (${order.paymentMode})
+${due > 0 ? `\u{1F6A8} *Balance Due on Delivery:* *Rs ${due.toLocaleString()}*` : `\u{1F389} *Payment Status:* FULLY PAID`}
+
+Thank you for choosing local and handmade! \u{1F64F}\u{2764}\u{FE0F}
+_Need to make changes? Reply directly to this message._`;
+
+      currentWhatsAppText = msg;
+      const cleanPhone = order.customerPhone.replace(/\D/g, '');
+      currentWhatsAppUrl = `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(msg)}`;
+
+      document.getElementById('whatsapp-preview-text').innerText = msg;
+      openModal('whatsapp-modal');
+      lucide.createIcons();
+    }
+
+    function copyWhatsAppMessage() {
+      navigator.clipboard.writeText(currentWhatsAppText).then(() => {
+        alert("Formatted WhatsApp invoice copied to clipboard!");
+      });
+    }
+
+    function triggerWhatsAppRedirect() {
+      window.open(currentWhatsAppUrl, '_blank');
+    }
+
+    // --- PRINTABLE RECEIPT MODAL ---
+    function openReceiptModal(orderId) {
+      const order = orders.find(o => o.id === orderId);
+      if (!order) return;
+
+      const total = order.items.reduce((s, it) => s + (it.price * it.qty), 0);
+      const due = Math.max(0, total - (order.advancePaid || 0));
+
+      document.getElementById('receipt-biz-name').innerText = businessProfile.name;
+      document.getElementById('receipt-order-no').innerText = `ORDER #${order.id}`;
+      document.getElementById('receipt-date').innerText = new Date(order.createdAt).toLocaleString();
+      document.getElementById('receipt-cust-name').innerText = order.customerName;
+      document.getElementById('receipt-cust-phone').innerText = order.customerPhone;
+      document.getElementById('receipt-delivery-time').innerText = `${order.deliveryDate} • ${order.deliveryTime}`;
+
+      const itemsList = document.getElementById('receipt-items-list');
+      itemsList.innerHTML = order.items.map(it => `
+        <div class="flex justify-between">
+          <span>${it.qty}x ${escapeHtml(it.name)}</span>
+          <span>Rs ${(it.price * it.qty).toLocaleString()}</span>
+        </div>
+      `).join('');
+
+      document.getElementById('receipt-total').innerText = `Rs ${total.toLocaleString()}`;
+      document.getElementById('receipt-advance').innerText = `Rs ${order.advancePaid.toLocaleString()}`;
+      document.getElementById('receipt-due').innerText = `Rs ${due.toLocaleString()}`;
+
+      openModal('receipt-modal');
+      lucide.createIcons();
+    }
+
+    // --- AI ORDER PARSER ENGINE ---
+    const AI_EXAMPLES = [
+      `bhaiya 1kg chocolate cake kal 4 baje chahiye, Priya Sharma ke liye, 9876543210, 500 advance GPay kar diya, likh dena happy birthday rohit, eggless banana`,
+      `hi ayesha here 9898989898 i want 2 boxes red velvet cupcakes today evening 6pm self pickup 200 cash already given`,
+      `rahul verma 9123456780 strawberry cream cake 1kg tomorrow 5pm happy anniversary meena 600 gpay done less sugar please`,
+      `order for rohan malhotra - 3 brownie boxes + 1 fondant topper, sunday 3pm, gate B apt 402, 9765432190, 1200 paytm`
+    ];
+
+    let currentAIParsed = null;
+
+    function loadExample(index) {
+      document.getElementById('ai-input').value = AI_EXAMPLES[index];
+      document.getElementById('ai-result').classList.add('hidden');
+    }
+
+    function runAIParser() {
+      const text = document.getElementById('ai-input').value.trim();
+      if (!text) {
+        alert("Please paste some text or select an example above.");
+        return;
+      }
+
+      document.getElementById('btn-parse-ai').disabled = true;
+      document.getElementById('ai-typing').classList.remove('hidden');
+      document.getElementById('ai-result').classList.add('hidden');
+
+      setTimeout(() => {
+        currentAIParsed = parseUnstructuredText(text);
+        renderAIResult(currentAIParsed);
+        document.getElementById('ai-typing').classList.add('hidden');
+        document.getElementById('ai-result').classList.remove('hidden');
+        document.getElementById('btn-parse-ai').disabled = false;
+        lucide.createIcons();
+      }, 1200);
+    }
+
+    function parseUnstructuredText(text) {
+      const lower = text.toLowerCase();
+      const res = {
+        customerName: 'Customer',
+        customerPhone: '9876543210',
+        deliveryDate: new Date().toISOString().split('T')[0],
+        deliveryTime: '16:00',
+        notes: '',
+        advancePaid: 0,
+        paymentMode: 'UPI / GPay',
+        items: []
+      };
+
+      // Phone extraction
+      const phoneMatch = text.match(/\b([6-9]\d{9})\b/);
+      if (phoneMatch) res.customerPhone = phoneMatch[1];
+
+      // Name extraction
+      const namePatterns = [
+        /(?:for|liye|ke liye|name|naam|customer)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+        /^([A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)\s+(?:here|ne|ki|order)/i
+      ];
+      for (const p of namePatterns) {
+        const m = text.match(p);
+        if (m) { res.customerName = m[1].trim(); break; }
+      }
+      if (res.customerName === 'Customer') {
+        const matchCap = text.match(/\b([A-Z][a-z]+ [A-Z][a-z]+)\b/);
+        if (matchCap) res.customerName = matchCap[1];
+      }
+
+      // Date extraction
+      if (/kal|tomorrow/i.test(lower)) {
+        const d = new Date(); d.setDate(d.getDate() + 1);
+        res.deliveryDate = d.toISOString().split('T')[0];
+      }
+
+      // Time extraction
+      const timeMatch = lower.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm|baje|shaam)?/);
+      if (timeMatch) {
+        let h = parseInt(timeMatch[1]);
+        const m = timeMatch[2] ? timeMatch[2] : '00';
+        const modifier = timeMatch[3] || '';
+        if ((modifier.includes('pm') || modifier.includes('baje') || modifier.includes('shaam')) && h < 12) {
+          h += 12;
+        }
+        res.deliveryTime = `${String(Math.min(h, 23)).padStart(2, '0')}:${m}`;
+      }
+
+      // Advance extraction
+      const advMatch = lower.match(/(?:advance|paid|diya|gpay|paytm|cash)[^\d]*(\d{3,5})/i) ||
+                       lower.match(/(\d{3,5})\s*(?:advance|paid|gpay|paytm|cash)/i);
+      if (advMatch) res.advancePaid = parseInt(advMatch[1]);
+
+      // Payment Mode
+      if (/gpay|google pay/i.test(lower)) res.paymentMode = 'UPI / GPay';
+      else if (/paytm/i.test(lower)) res.paymentMode = 'Paytm';
+      else if (/phonepe/i.test(lower)) res.paymentMode = 'PhonePe';
+      else if (/cash/i.test(lower)) res.paymentMode = 'Cash';
+
+      // Notes & Inscriptions
+      const noteMatch = text.match(/(?:likh dena|write|inscription)[:\s]+["']?([^"'\n,]+)/i) ||
+                        text.match(/(happy birthday [^,\n]+|happy anniversary [^,\n]+)/i);
+      if (noteMatch) res.notes = noteMatch[1].trim();
+      if (/eggless/i.test(lower)) res.notes += (res.notes ? ' • ' : '') + 'Eggless';
+      if (/less sugar/i.test(lower)) res.notes += (res.notes ? ' • ' : '') + 'Less sugar';
+
+      // Match Items against catalog
+      catalog.forEach(cat => {
+        const words = cat.name.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+        const match = words.some(w => lower.includes(w));
+        if (match) {
+          const qtyMatch = text.match(new RegExp(`(\\d+)\\s*(?:box|boxes|kg|pcs|piece)?\\s*${words[0]}`, 'i')) ||
+                           text.match(new RegExp(`${words[0]}[^\\d]*(\\d+)`, 'i'));
+          const qty = qtyMatch ? parseInt(qtyMatch[1]) : 1;
+          res.items.push({ name: cat.name, qty: qty || 1, price: cat.price });
+        }
+      });
+
+      if (res.items.length === 0) {
+        res.items.push({ name: 'Belgian Chocolate Truffle (1 kg)', qty: 1, price: 950 });
+      }
+
+      return res;
+    }
+
+    function renderAIResult(p) {
+      const total = p.items.reduce((s, i) => s + (i.price * i.qty), 0);
+      const due = Math.max(0, total - p.advancePaid);
+
+      document.getElementById('ai-fields').innerHTML = `
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="w-24 text-slate-400 font-bold uppercase tracking-wider">Customer:</span>
+          <span class="font-bold text-slate-900">${escapeHtml(p.customerName)}</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="w-24 text-slate-400 font-bold uppercase tracking-wider">Phone:</span>
+          <span class="font-mono font-semibold text-slate-800">${p.customerPhone}</span>
+        </div>
+        <div class="flex items-center space-x-2 text-xs">
+          <span class="w-24 text-slate-400 font-bold uppercase tracking-wider">Delivery:</span>
+          <span class="font-semibold text-slate-800">${p.deliveryDate} at ${p.deliveryTime}</span>
+        </div>
+        <div class="flex items-start space-x-2 text-xs">
+          <span class="w-24 text-slate-400 font-bold uppercase tracking-wider pt-0.5">Items:</span>
+          <div class="space-y-0.5">
+            ${p.items.map(it => `<div class="font-bold text-slate-900">${it.qty}x ${escapeHtml(it.name)}</div>`).join('')}
+          </div>
+        </div>
+        ${p.notes ? `
+          <div class="flex items-center space-x-2 text-xs">
+            <span class="w-24 text-slate-400 font-bold uppercase tracking-wider">Notes:</span>
+            <span class="text-rose-600 italic font-medium">"${escapeHtml(p.notes)}"</span>
+          </div>
+        ` : ''}
+      `;
+
+      document.getElementById('ai-finance').innerHTML = `
+        <div class="flex justify-between">
+          <span class="text-slate-500">Total Calculated:</span>
+          <span class="font-bold text-slate-900">Rs ${total.toLocaleString()}</span>
+        </div>
+        <div class="flex justify-between text-emerald-600">
+          <span>Advance Detected:</span>
+          <span class="font-bold">Rs ${p.advancePaid.toLocaleString()} (${p.paymentMode})</span>
+        </div>
+        <div class="flex justify-between border-t border-slate-200 pt-1.5 font-bold ${due > 0 ? 'text-rose-600' : 'text-emerald-600'}">
+          <span>${due > 0 ? 'Balance Due on Delivery:' : 'Fully Paid:'}</span>
+          <span>Rs ${due.toLocaleString()}</span>
+        </div>
+      `;
+    }
+
+    function confirmAIOrder() {
+      if (!currentAIParsed) return;
+      const newOrder = {
+        id: 'ORD-' + (100 + orders.length + 1),
+        customerName: currentAIParsed.customerName,
+        customerPhone: currentAIParsed.customerPhone,
+        deliveryDate: currentAIParsed.deliveryDate,
+        deliveryTime: currentAIParsed.deliveryTime,
+        notes: currentAIParsed.notes,
+        advancePaid: currentAIParsed.advancePaid,
+        paymentMode: currentAIParsed.paymentMode,
+        status: 'NEW',
+        items: currentAIParsed.items,
+        createdAt: new Date().toISOString()
+      };
+
+      orders.unshift(newOrder);
+      saveData();
+      renderAll();
+      setActiveTab('orders');
+      if (window.confetti) confetti({ particleCount: 50, spread: 60 });
+    }
+
+    function sendAIWhatsApp() {
+      if (!currentAIParsed) return;
+      confirmAIOrder();
+      setTimeout(() => {
+        openWhatsAppModal(orders[0].id);
+      }, 200);
+    }
+
+    // --- PROFILE & UTILS ---
+    function editBusinessProfile() {
+      const newName = prompt("Enter your Business Name:", businessProfile.name);
+      if (newName) {
+        businessProfile.name = newName;
+        saveData();
+        renderAll();
+      }
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>
